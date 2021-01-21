@@ -37,13 +37,13 @@ plt.gca().set_aspect('equal', 'datalim')
 
 plt.savefig(os.path.join('..', 'result', 'tsne_vitalsign.png'))
 
-tsne_labels = DBSCAN(eps=0.3, min_samples=5).fit_predict(tsne_embedding)
-clustered = (tsne_labels >= 0)
-plt.scatter(tsne_embedding[clustered, 0],
-            tsne_embedding[clustered, 1],
-            c=tsne_labels[clustered],
-            s=1,
-            cmap='Spectral')
-plt.savefig(os.path.join('..', 'result', 'tsne_vitalsign_cluster.png'))
+tsne_labels = DBSCAN(eps=0.3, min_samples=50).fit_predict(tsne_embedding)
+# clustered = (tsne_labels >= 0)
+# plt.scatter(tsne_embedding[clustered, 0],
+#             tsne_embedding[clustered, 1],
+#             c=tsne_labels[clustered],
+#             s=1,
+#             cmap='Spectral')
+# plt.savefig(os.path.join('..', 'result', 'tsne_vitalsign_cluster.png'))
 tidy_data['tsne_labels'] = tsne_labels
 tidy_data.to_csv(os.path.join('..', 'result', 'vital_cluster.csv'), index=False)
