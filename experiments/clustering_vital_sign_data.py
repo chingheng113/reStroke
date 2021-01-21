@@ -27,22 +27,23 @@ X_data_one_hot = pd.get_dummies(X_data, columns=categorical_columns)
 
 heom_metric = distython.HEOM(X_data, categorical_ix,)
 
-tsne_heom_embedding = TSNE(n_components=2, perplexity=15, learning_rate=10, random_seed=369, metric=heom_metric).fit_transform(X_data_one_hot)
+tsne_embedding = TSNE(n_components=2, perplexity=15, learning_rate=10, random_seed=369).fit_transform(X_data_one_hot)
 
 plt.scatter(
-    tsne_heom_embedding[:, 0],
-    tsne_heom_embedding[:, 1],
+    tsne_embedding[:, 0],
+    tsne_embedding[:, 1],
     c=y_data.values.astype(int), s=1, cmap='Spectral')
 plt.gca().set_aspect('equal', 'datalim')
 
 plt.savefig(os.path.join('..', 'result', 'tsne_hemo_vitalsign.png'))
 
-tsne_labels = DBSCAN(eps=0.3, min_samples=5).fit_predict(tsne_heom_embedding)
+tsne_labels = DBSCAN(eps=0.3, min_samples=5).fit_predict(tsne_embedding)
 clustered = (tsne_labels >= 0)
-plt.scatter(tsne_heom_embedding[clustered, 0],
-            tsne_heom_embedding[clustered, 1],
+plt.scatter(tsne_embedding[clustered, 0],
+            tsne_embedding[clustered, 1],
             c=tsne_labels[clustered],
             s=1,
             cmap='Spectral')
 plt.savefig(os.path.join('..', 'result', 'tsne_hemo_vitalsign.png'))
 tidy_data['tsne_labels'] = tsne_labels
+tidy_data.to_csv(os.path.join('..', 'result', 'vital_cluster.csv'), index=False)
