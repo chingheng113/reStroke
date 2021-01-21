@@ -10,6 +10,7 @@ from sklearn.cluster import DBSCAN
 
 
 tidy_data = pd.read_csv('vitalsing_data.csv')
+
 print(tidy_data.shape)
 X_data = tidy_data.drop(['ID', 'CHT_NO', 'admin_date', 'discharge_date',
                          'AllMortality', 'CVDeath  ', 'Death Date', 'SurvivalWeeks'], axis=1)
@@ -24,8 +25,6 @@ numerical_columns = np.setdiff1d(X_data.columns, categorical_columns)
 X_data[numerical_columns] = StandardScaler().fit_transform(X_data[numerical_columns])
 # one-hot
 X_data_one_hot = pd.get_dummies(X_data, columns=categorical_columns)
-
-heom_metric = distython.HEOM(X_data, categorical_ix,)
 
 tsne_embedding = TSNE(n_components=2, perplexity=15, learning_rate=10, random_seed=369).fit_transform(X_data_one_hot)
 
