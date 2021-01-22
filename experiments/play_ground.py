@@ -4,8 +4,9 @@ import os
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
-import distython
-from tsnecuda import TSNE
+from util import JIM_HEOM
+import umap
+
 
 
 tidy_data = pd.read_csv('vitalsing_data.csv')
@@ -33,8 +34,22 @@ X_data[numerical_columns] = StandardScaler().fit_transform(X_data[numerical_colu
 # one-hot
 X_data_one_hot = pd.get_dummies(X_data, columns=categorical_columns)
 
-heom_metric = distython.HEOM(X_data, categorical_ix,)
+heom_metric = JIM_HEOM.JHEOM(X_data, categorical_ix,)
 
-tsne_embedding = TSNE(n_components=2, perplexity=15, learning_rate=10).fit_transform(X_data_one_hot)
 
-print(tsne_embedding)
+print(heom_metric)
+
+
+reducer = umap.UMAP(metric='cosine', random_state=369)
+
+umap_heom_embedding = reducer.fit_transform(X_data)
+
+plt.clf()
+plt.scatter(
+    umap_heom_embedding[:, 0],
+    umap_heom_embedding[:, 1],
+    c=y_data.values.astype(int), s=1, cmap='Spectral')
+plt.gca().set_aspect('equal', 'datalim')
+
+plt.show()
+print(umap_heom_embedding)
