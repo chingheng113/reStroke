@@ -1,7 +1,7 @@
 import numba
 import numpy as np
 
-
+# original from distython, revised by Jim
 class JHEOM():
     def __init__(self, X, cat_ix, nan_equivalents=[np.nan, 0], normalised="normal"):
         """ Heterogeneous Euclidean-Overlap Metric
